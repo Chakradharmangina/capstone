@@ -1,0 +1,5 @@
+const app = require("../app");
+const configr = require("../config");
+const PORT = configr.WWW_PORT;
+
+app.listen(PORT, console.log(`user server started at port ${PORT}`));

@@ -1,0 +1,110 @@
+const app = require("../app");
+const configr = require("../configr");
+const { createProxyMiddleware } = require("http-proxy-middleware");
+let PORT = configr.WWW_PORT;
+
+app.use(
+  "/Admin/CreateUser",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/CreateUser": "/createuser",
+    },
+    changeOrigin: true,
+    options: {
+      raw: {
+        language: "json",
+      },
+    },
+  })
+);
+
+app.use(
+  "/Admin/ReadUser",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/ReadUser": "/readuser",
+    },
+    changeOrigin: true,
+  })
+);
+
+app.use(
+  "/Admin/UpdateUser",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/UpdateUser": "/updateuser",
+    },
+    changeOrigin: true,
+  })
+);
+
+app.use(
+  "/Admin/DelectUser",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/DelectUser": "/delectuser",
+    },
+    changeOrigin: true,
+  })
+);
+
+app.use(
+  "/Admin/CreateProduct",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/CreateProduct": "/createproduct",
+    },
+    changeOrigin: true,
+  })
+);
+
+app.use(
+  "/Admin/ReadProduct",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/ReadProduct": "/readproduct",
+    },
+    changeOrigin: true,
+  })
+);
+
+app.use(
+  "/Admin/UpdateProduct",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/UpdateProduct": "/updateproduct",
+    },
+    changeOrigin: true,
+  })
+);
+
+app.use(
+  "/Admin/DelectProduct",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/DelectProduct": "/delectproduct",
+    },
+    changeOrigin: true,
+  })
+);
+
+app.use(
+  "/Admin/UploadData",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: {
+      "^/Admin/UploadData": "/uploadcsvdata",
+    },
+    changeOrigin: true,
+  })
+);
+
+app.listen(PORT, console.log(`gateway started at PORT ${PORT}`));
