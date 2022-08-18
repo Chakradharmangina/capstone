@@ -1,30 +1,53 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const app = express();
-var jp = bodyParser.json();
-var urlencoded = bodyParser.urlencoded({ extended: false });
-// app.use(bp.urlencoded({ extended: false }));
+const bp = require("body-parser");
+app.use(bp.json());
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const Controllers = require("../../controllers/adminControllers");
 
-app.post("/createuser", urlencoded, Controllers.createuser);
+app.post("/signUp", Controllers.adminSignup);
 
-app.post("/readuser", Controllers.readuser);
+app.post("/signIn", Controllers.adminSignin);
 
-app.post("/updateuser", Controllers.updateuser);
+app.get("/logout", Controllers.adminLogOut);
 
-app.post("/delectuser", Controllers.delectuser);
+app.post("/createUserAccount", authorize, Controllers.adminCreateUser); //Route for creating new user account by Admin!
 
-app.post("/createproduct", Controllers.createproduct);
+app.put("/updateUserEmail/:email", authorize, Controllers.adminUpdateUserEmail); //Route for updating email in case email id of user changes!
 
-app.post("/readproduct", Controllers.readproduct);
+app.get("/readUserDetails/:email", Controllers.adminUserDetails); //Route for reading User Account Details.
 
-app.post("/delectproduct", Controllers.delectproduct);
+app.delete("/deleteUser/:email", Controllers.adminDeleteUser); //Route for deleting user account by Admin!
 
-app.post("/updateproduct", Controllers.updateproduct);
+app.post("/createProduct", Controllers.adminCreateProduct);
+
+app.get("/getProducts", Controllers.adminGetProducts);
+
+app.delete("/deleteProduct/:name", authorize, Controllers.adminDeleteProduct);
+
+app.put("/updateProduct/:name", authorize, Controllers.adminUpdateProduct);
 
 app.post("/uploadcsvdata", Controllers.insertbulkdata);
 
-// app.use(bp.json());
+mongoose
+  .connect("mongodb://localhost:27017/Practice")
+  .then((res) => console.log("Connected to DB!"))
+  .catch((err) => console.log(err));
+
+function authorize(req, res, next) {
+  try {
+    let reqtoken = req.headers["authorization"];
+    const token = reqtoken.replace("Bearer ", "");
+    const verifiedToken = jwt.verify(token, "jamesbond");
+    req.token = verifiedToken;
+    next();
+    return;
+  } catch (err) {
+    res.send({ msg: "you are not authorized", status: false });
+  }
+}
 
 module.exports = app;

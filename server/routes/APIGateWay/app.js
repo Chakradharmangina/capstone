@@ -1,19 +1,31 @@
 const express = require("express");
 const app = express();
-const bp = require("body-parser");
-app.use(bp.json());
+const { createProxyMiddleware } = require("http-proxy-middleware");
+const configr = require("./configr");
 
-app.post("/Login", (req, res) => {
-  console.log(req.body);
-  res.send("Login Api");
-});
+const mongoose = require("mongoose");
 
-app.post("/SignUp", (req, res) => {
-  res.send("Signup Api");
-});
+app.use(
+  "/admin",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: { "^/admin": "/" },
+    changeOrigin: true,
+  })
+);
 
-app.post("/Logout", (req, res) => {
-  res.send("logout api");
-});
+app.use(
+  "/user",
+  createProxyMiddleware({
+    target: configr.adminServiceURL,
+    pathRewrite: { "^/user": "/" },
+    changeOrigin: true,
+  })
+);
+
+mongoose
+  .connect("mongodb://localhost:27017/Practice")
+  .then((res) => console.log("Connected to DB!"))
+  .catch((err) => console.log(err));
 
 module.exports = app;
