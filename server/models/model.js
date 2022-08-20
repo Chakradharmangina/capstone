@@ -43,6 +43,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
+  itemsincart: [{ type: Object }],
+  itemsinwishlist: [{ type: Object }],
+  orderlist: [{ type: Object }],
 });
 const productSchema = new mongoose.Schema(
   {

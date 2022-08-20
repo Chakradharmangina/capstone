@@ -41,28 +41,22 @@ Controllers.adminSignin = async function (req, res) {
           algorithm: "HS512",
         }); //generation of token
         console.log(generatedtoken);
-        res
-          .status(200)
-          .send({
-            msg: "login successfull",
-            status: true,
-            token: generatedtoken,
-          }); //this token can then be set in local storage of browser
+        res.status(200).send({
+          msg: "login successfull",
+          status: true,
+          token: generatedtoken,
+        }); //this token can then be set in local storage of browser
       } else {
-        res
-          .status(404)
-          .send({
-            msg: "login is not successfull,check your password",
-            status: false,
-          });
-      }
-    } else {
-      res
-        .status(404)
-        .send({
-          msg: "login is notsuccessfull,email does not exists",
+        res.status(404).send({
+          msg: "login is not successfull,check your password",
           status: false,
         });
+      }
+    } else {
+      res.status(404).send({
+        msg: "login is notsuccessfull,email does not exists",
+        status: false,
+      });
     }
   } catch (err) {
     res.status(404).send(err);

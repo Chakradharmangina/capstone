@@ -5,7 +5,8 @@ app.use(bp.json());
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
-
+const cors = require("cors");
+app.use(cors());
 const Controllers = require("../../controllers/adminControllers");
 
 app.post("/signUp", Controllers.adminSignup);

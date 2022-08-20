@@ -17,7 +17,7 @@ app.use(
 app.use(
   "/user",
   createProxyMiddleware({
-    target: configr.adminServiceURL,
+    target: configr.userServiceURL,
     pathRewrite: { "^/user": "/" },
     changeOrigin: true,
   })
