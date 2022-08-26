@@ -1,0 +1,5 @@
+const app = require("../app");
+const configr = require("../configr");
+let PORT = configr.WWW_PORT;
+
+app.listen(PORT, console.log(`gateway started at PORT ${PORT}`));
